@@ -33,7 +33,7 @@ def reply_with_stored_reply(message):
         reply_message = stored_reply["reply"]
         bot.reply_to(message, reply_message)
     else:
-        bot.reply_to(message, "I'm sorry, I don't have a stored reply for that.")
+        bot.reply_to(message, "are bhai bhai bhai ruko zara sabar kro ye kya likhahai kuch smaj nhi aa rha hai itna bhi advance nhi hu mai.")
 
 
 def main():
