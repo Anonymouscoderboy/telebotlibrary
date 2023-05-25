@@ -1,3 +1,4 @@
+from telegram.ext import Updater
 import logging
 
 TOKEN = "6101196560:AAE9Te6XfIfldcJcqdnh6Yb7SHPVi_z3hRc"
