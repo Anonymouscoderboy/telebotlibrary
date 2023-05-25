@@ -1,48 +1,48 @@
 import logging
-from pymongo import MongoClient
-import telebot
 
 TOKEN = "6101196560:AAE9Te6XfIfldcJcqdnh6Yb7SHPVi_z3hRc"
-MONGO_URI = "mongodb+srv://abc:abcd@cluster0.dzijde4.mongodb.net/?retryWrites=true&w=majority"  # Update with your MongoDB connection URI
-DATABASE_NAME = "abc"
-COLLECTION_NAME = "AIdata"
+CHAT_DATA_FILE = "chat_data.txt"
 
 # Configure logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Create a MongoDB client and connect to the database
-mongo_client = MongoClient(MONGO_URI)
-db = mongo_client[DATABASE_NAME]
-collection = db[COLLECTION_NAME]
 
-# Create the telebot instance
-bot = telebot.TeleBot(TOKEN)
-
-
-@bot.message_handler(func=lambda message: True)
-def store_chat_data(message):
-    chat_id = message.chat.id
-    user_id = message.from_user.id
-    text = message.text
+def store_chat_data(update, context):
+    chat_id = update.effective_chat.id
+    user_id = update.effective_user.id
+    message = update.message.text
 
     # Check if the message is a reply to a previous message
-    if message.reply_to_message:
-        replied_message = message.reply_to_message.text
+    if update.message.reply_to_message:
+        # Retrieve the ID of the message being replied to
+        replied_message_id = update.message.reply_to_message.message_id
 
-        # Store the question, reply, and user information in the MongoDB collection
-        data = {
-            "chat_id": chat_id,
-            "user_id": user_id,
-            "question": replied_message,
-            "reply": text
-        }
-        collection.insert_one(data)
+        # Retrieve the text of the replied message
+        replied_message = update.message.reply_to_message.text
+
+        # Store the question, reply, and user information in a file
+        with open(CHAT_DATA_FILE, "a") as file:
+            file.write(f"Chat ID: {chat_id}\n")
+            file.write(f"User ID: {user_id}\n")
+            file.write(f"Question: {replied_message}\n")
+            file.write(f"Reply: {message}\n")
+            file.write("--------------------\n")
+
+        logger.info("Chat data stored successfully.")
 
 
 def main():
-    bot.polling()
+    updater = Updater(TOKEN)
+    dispatcher = updater.dispatcher
+
+    # Register the message handler to analyze and store chat data
+    dispatcher.add_handler(MessageHandler(Filters.text & (~Filters.command), store_chat_data))
+
+    updater.start_polling()
+    logger.info("Bot started polling...")
+    updater.idle()
 
 
 if __name__ == '__main__':
