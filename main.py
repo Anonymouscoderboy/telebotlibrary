@@ -1,4 +1,5 @@
 import logging
+import random
 import telebot
 
 TOKEN = "6101196560:AAE9Te6XfIfldcJcqdnh6Yb7SHPVi_z3hRc"
@@ -11,25 +12,21 @@ logger = logging.getLogger(__name__)
 # Create a new TeleBot instance
 bot = telebot.TeleBot(TOKEN)
 
+# Load the stored chat data from the file
+stored_data = []
+with open("chat_data.txt", "r") as file:
+    data = file.read().split("--------")
+    stored_data = [entry.strip() for entry in data if entry.strip()]
+
 
 @bot.message_handler(func=lambda message: True, content_types=['text'])
-def store_chat_data(message):
-    chat_id = message.chat.id
-    user_id = message.from_user.id
-    text = message.text
-
-    # Check if the message is a reply to a previous message
-    if message.reply_to_message:
-        replied_message_id = message.reply_to_message.message_id
-        replied_message = message.reply_to_message.text
-
-        # Store the question, reply, and user information in a file
-        with open("chat_data.txt", "a") as file:
-            file.write(f"Chat ID: {chat_id}\n")
-            file.write(f"User ID: {user_id}\n")
-            file.write(f"Question: {replied_message}\n")
-            file.write(f"Reply: {text}\n")
-            file.write("--------\n")
+def reply_with_saved_data(message):
+    # Select a random entry from the stored data
+    if stored_data:
+        random_entry = random.choice(stored_data)
+        bot.reply_to(message, random_entry)
+    else:
+        bot.reply_to(message, "Sorry, I don't have any saved data to reply with.")
 
 
 def main():
