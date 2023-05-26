@@ -1,31 +1,58 @@
-import telebot
+import logging
+from telegram import Update
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
 
-# Replace with your bot token
-bot_token = '6101196560:AAE9Te6XfIfldcJcqdnh6Yb7SHPVi_z3hRc'
+# Set up logging
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
-# Create an instance of the TeleBot class
-bot = telebot.TeleBot(bot_token)
-
-# Predefined replies
+# Predefined questions and replies
 replies = {
-    'hello': 'Hello there!',
-    'how are you?': 'I am doing well, thank you!',
-    'bye': 'Goodbye!'
+    'hi': 'Hello!',
+    'hello': 'Hi there!',
+    'tum kon ho': 'Main ek Telegram bot hoon.',
+    'thumra name kya hai': 'Mera naam ChatBot hai.',
+    'where are you from': 'I am from the virtual world.',
+    'tum kha rhete ho': 'Main har jagah maujood hoon!'
 }
 
-# Handle '/start' command
-@bot.message_handler(commands=['start'])
-def handle_start(message):
-    bot.reply_to(message, "Hello! I am your bot.")
+# Additional questions and replies
+additional_replies = {
+    'how old are you': 'I am ageless.',
+    'what is your purpose': 'My purpose is to assist and provide information.',
+    'tell me a joke': 'Why don’t scientists trust atoms? Because they make up everything!',
+    # Add more questions and replies here
+}
+
+# Handle /start command
+def start(update: Update, context: CallbackContext):
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Hello! I am your bot.")
 
 # Handle text messages
-@bot.message_handler(func=lambda message: True)
-def handle_text(message):
-    text = message.text.lower()
+def handle_text(update: Update, context: CallbackContext):
+    text = update.message.text.lower()
     if text in replies:
-        bot.reply_to(message, replies[text])
+        context.bot.send_message(chat_id=update.effective_chat.id, text=replies[text])
+    elif text in additional_replies:
+        context.bot.send_message(chat_id=update.effective_chat.id, text=additional_replies[text])
     else:
-        bot.reply_to(message, "Sorry, I don't understand.")
+        context.bot.send_message(chat_id=update.effective_chat.id, text="Sorry, I don't understand.")
 
-# Run the bot
-bot.polling()
+def main():
+    # Set up the Telegram bot
+    updater = Updater(token='6101196560:AAE9Te6XfIfldcJcqdnh6Yb7SHPVi_z3hRc', use_context=True)
+    dispatcher = updater.dispatcher
+
+    # Add command handler for /start
+    start_handler = CommandHandler('start', start)
+    dispatcher.add_handler(start_handler)
+
+    # Add message handler for text messages
+    text_handler = MessageHandler(Filters.text & ~Filters.command, handle_text)
+    dispatcher.add_handler(text_handler)
+
+    # Start the bot
+    updater.start_polling()
+    updater.idle()
+
+if __name__ == '__main__':
+    main()
