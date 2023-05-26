@@ -1,44 +1,65 @@
 import logging
-import random
-import telebot
-from pymongo import MongoClient
+import os
+import pymongo
+from telegram.ext import Updater, MessageHandler, Filters
 
-TOKEN = "6101196560:AAE9Te6XfIfldcJcqdnh6Yb7SHPVi_z3hRc"
-MONGO_URI = "mongodb+srv://abc:abcd@cluster0.dzijde4.mongodb.net/?retryWrites=true&w=majority"  # Update with your MongoDB connection URI
-DATABASE_NAME = "abc"
-COLLECTION_NAME = "AIdata"
+TOKEN = '6101196560:AAE9Te6XfIfldcJcqdnh6Yb7SHPVi_z3hRc'
+MONGO_URI = 'mongodb+srv://abc:abcd@cluster0.dzijde4.mongodb.net/?retryWrites=true&w=majority'  # Update with your MongoDB connection URI
+DATABASE_NAME = 'abc'
+COLLECTION_NAME = 'AIdata'
 
-# Configure logging
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    level=logging.INFO)
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Create a MongoDB client and connect to the database
-mongo_client = MongoClient(MONGO_URI)
+mongo_client = pymongo.MongoClient(MONGO_URI)
 db = mongo_client[DATABASE_NAME]
 collection = db[COLLECTION_NAME]
 
-# Create a new TeleBot instance
-bot = telebot.TeleBot(TOKEN)
+
+def store_chat_data(update, context):
+    chat_id = update.effective_chat.id
+    user_id = update.effective_user.id
+    message_text = update.message.text
+
+    data = {
+        'chat_id': chat_id,
+        'user_id': user_id,
+        'message_text': message_text
+    }
+
+    collection.insert_one(data)
 
 
-@bot.message_handler(func=lambda message: True, content_types=['text'])
-def reply_with_stored_reply(message):
-    # Retrieve the stored reply based on the incoming message text
-    query = {"question": message.text.lower()}
-    stored_reply = collection.find_one(query)
-
+def get_stored_reply(message_text):
+    stored_reply = collection.find_one({'message_text': message_text})
     if stored_reply:
-        # Reply with the stored reply
-        reply_message = stored_reply["reply"]
-        bot.reply_to(message, reply_message)
+        return stored_reply['reply']
     else:
-        bot.reply_to(message, "are bhai bhai bhai ruko zara sabar kro ye kya likha hai kuch smaj nhi aa rha hai itna bhi advance nhi hu mai.")
+        return None
+
+
+def reply_to_message(update, context):
+    message_text = update.message.text
+
+    stored_reply = get_stored_reply(message_text)
+    if stored_reply:
+        update.message.reply_text(stored_reply)
 
 
 def main():
-    # Start the bot
-    bot.polling()
+    updater = Updater(TOKEN, use_context=True)
+    dispatcher = updater.dispatcher
+
+    # Register the message handler to store chat data
+    dispatcher.add_handler(MessageHandler(Filters.text & (~Filters.command), store_chat_data))
+
+    # Register the message handler to reply based on stored replies
+    dispatcher.add_handler(MessageHandler(Filters.text & (~Filters.command), reply_to_message))
+
+    updater.start_polling()
+    logger.info('Bot started polling...')
+
+    updater.idle()
 
 
 if __name__ == '__main__':
