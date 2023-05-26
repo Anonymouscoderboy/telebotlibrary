@@ -1,6 +1,6 @@
 import logging
 from telegram import Update
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
 # Set up logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
@@ -24,11 +24,11 @@ additional_replies = {
 }
 
 # Handle /start command
-def start(update: Update, context: CallbackContext):
+def start(update: Update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text="Hello! I am your bot.")
 
 # Handle text messages
-def handle_text(update: Update, context: CallbackContext):
+def handle_text(update: Update, context):
     text = update.message.text.lower()
     if text in replies:
         context.bot.send_message(chat_id=update.effective_chat.id, text=replies[text])
