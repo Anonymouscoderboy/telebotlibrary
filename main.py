@@ -23,8 +23,7 @@ replies = {
     'aapka din kaisa raha?': 'मेरा दिन अच्छा रहा, धन्यवाद।',
     'aapko koi bimari hai?': 'नहीं, मैं एक AI बॉट हूँ, मुझे बीमारी नहीं होती।',
     'aap kya kar sakte ho?': 'मैं आपको विभिन्न विषयों पर जानकारी देने, सवालों का उत्तर देने और मदद करने में सक्षम हूँ।',
-    'kya aap pyaar karte ho?': 'हाँ, मैं आपसे प्यार करता हूँ ❤'
-    'chup?': 'tu chup mai kyo chup ha',
+    'kya aap pyaar karte ho?': 'हाँ, मैं आपसे प्यार करता हूँ ❤',
     'bsdk?': 'eeee gaddari karbe tohariii upssss hehe sorry no gali',
     'mc?': 'kya matlab tum mujhe most cute bnda bol rhe ho',
     'bc?': 'aby baat baat pr bhadak kyo jata hai tu'
