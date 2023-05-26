@@ -23,7 +23,7 @@ replies = {
     'aapka din kaisa raha?': 'मेरा दिन अच्छा रहा, धन्यवाद।',
     'aapko koi bimari hai?': 'नहीं, मैं एक AI बॉट हूँ, मुझे बीमारी नहीं होती।',
     'aap kya kar sakte ho?': 'मैं आपको विभिन्न विषयों पर जानकारी देने, सवालों का उत्तर देने और मदद करने में सक्षम हूँ।',
-    'kya aap pyaar karte ho?': 'हाँ, मैं आपसे प्यार करता हूँ ❤"
+    'kya aap pyaar karte ho?': 'हाँ, मैं आपसे प्यार करता हूँ ❤!'
 }
 
 # Additional questions and replies
