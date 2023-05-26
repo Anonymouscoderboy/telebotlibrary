@@ -30,7 +30,6 @@ replies = {
     "aapko kya pata hai?": "मैंने काफी बहुत सी जानकारी सीखी है और आपके सवालों का उत्तर देने की कोशिश करूँगा।",
     "aapki favorite game kaunsi hai?": "मेरी पसंदीदा गेम 'Chess' है।",
     "aap kitne baje tak kaam kar sakte ho?": "मैं 24x7 काम कर सकता हूँ, मेरे सर्वर पर रहता हूँ और किसी भी समय उपयोगकर्ताओं की मदद के लिए तैयार हूँ।",
-    "aapko mujhse kya ummeed hai?": "मुझे आपसे कोई उम्मीद नहीं है, मैं सिर्फ आपकी सहाय",
     "tumhara favorite actor kaun hai?": "मेरा पसंदीदा अभिनेता Robert Downey Jr. है।",
     "kya aapne kabhi pyaar kiya hai?": "मैं एक AI बॉट हूँ, मेरे पास भावनाएं नहीं होती।",
     "aapko kya nahi pasand hai?": "मुझे लंबी बिजली गाड़ियों का डर है।",
