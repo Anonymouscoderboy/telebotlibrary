@@ -1,36 +1,27 @@
-import logging
 import telebot
+import reply  # Import the module containing predefined replies
 
+# Token of your Telegram bot
 TOKEN = '6101196560:AAE9Te6XfIfldcJcqdnh6Yb7SHPVi_z3hRc'
-CHAT_ID = '-1001832126466'
-LOG_FILE = 'chat_log.txt'
 
+# Create an instance of the TeleBot class
 bot = telebot.TeleBot(TOKEN)
 
-# Enable logging
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
-logger = logging.getLogger(__name__)
+# Predefined commands and their respective replies
+commands = {
+    '/start': reply.start_reply,
+    '/help': reply.help_reply,
+    '/info': reply.info_reply,
+    '/status': reply.status_reply,
+    # Add more commands and their replies here
+}
 
-# Store chat data in a log file
-def store_chat_data(message):
-    with open(LOG_FILE, 'a', encoding='utf-8') as file:
-        file.write(f'[{message.chat.id}] [{message.from_user.username}]: {message.text}\n')
-
-# Load stored replies from the log file
-def load_stored_replies():
-    with open(LOG_FILE, 'r', encoding='utf-8') as file:
-        return file.readlines()
-
-# Handle incoming messages
-@bot.message_handler(func=lambda message: True)
-def handle_message(message):
-    store_chat_data(message)
-
-    stored_replies = load_stored_replies()
-    for reply in stored_replies:
-        if reply.strip().lower() == message.text.strip().lower():
-            bot.reply_to(message, reply)
-            break
+# Handler for all commands
+@bot.message_handler(commands=list(commands.keys()))
+def handle_commands(message):
+    command = message.text.lower()
+    if command in commands:
+        bot.reply_to(message, commands[command])
 
 # Start the bot
 bot.polling()
