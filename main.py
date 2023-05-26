@@ -1,7 +1,7 @@
 import telebot
 
 # Replace with your bot token
-bot_token = '5129018945:AAFElYVuMMAoGfylZYMAMsrFs5kLCFnhYwg'
+bot_token = '6101196560:AAE9Te6XfIfldcJcqdnh6Yb7SHPVi_z3hRc'
 
 # Create an instance of the TeleBot class
 bot = telebot.TeleBot(bot_token)
