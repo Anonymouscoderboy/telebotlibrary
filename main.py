@@ -1,7 +1,7 @@
 import telebot
 
 # Create an instance of the bot
-bot = telebot.TeleBot('YOUR_TELEGRAM_BOT_TOKEN')
+bot = telebot.TeleBot('6101196560:AAE9Te6XfIfldcJcqdnh6Yb7SHPVi_z3hRc')
 
 # Dictionary containing the replies
 replies = {
