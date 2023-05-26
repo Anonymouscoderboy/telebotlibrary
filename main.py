@@ -1,4 +1,4 @@
-\import logging
+import logging
 import telebot
 
 # Set up logging
