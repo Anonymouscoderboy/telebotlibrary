@@ -1,6 +1,5 @@
-import logging
-from telegram import Update, Filters
-from telegram.ext import Updater, CommandHandler, MessageHandler
+\import logging
+import telebot
 
 # Set up logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
@@ -23,36 +22,24 @@ additional_replies = {
     # Add more questions and replies here
 }
 
+# Initialize the bot
+bot = telebot.TeleBot('6101196560:AAE9Te6XfIfldcJcqdnh6Yb7SHPVi_z3hRc')
+
 # Handle /start command
-def start(update: Update, context):
-    context.bot.send_message(chat_id=update.effective_chat.id, text="Hello! I am your bot.")
+@bot.message_handler(commands=['start'])
+def start(message):
+    bot.reply_to(message, 'Hello! I am your bot.')
 
 # Handle text messages
-def handle_text(update: Update, context):
-    text = update.message.text.lower()
+@bot.message_handler(func=lambda message: True)
+def handle_text(message):
+    text = message.text.lower()
     if text in replies:
-        context.bot.send_message(chat_id=update.effective_chat.id, text=replies[text])
+        bot.reply_to(message, replies[text])
     elif text in additional_replies:
-        context.bot.send_message(chat_id=update.effective_chat.id, text=additional_replies[text])
+        bot.reply_to(message, additional_replies[text])
     else:
-        context.bot.send_message(chat_id=update.effective_chat.id, text="Sorry, I don't understand.")
+        bot.reply_to(message, "Sorry, I don't understand.")
 
-def main():
-    # Set up the Telegram bot
-    updater = Updater(token='6101196560:AAE9Te6XfIfldcJcqdnh6Yb7SHPVi_z3hRc', use_context=True)
-    dispatcher = updater.dispatcher
-
-    # Add command handler for /start
-    start_handler = CommandHandler('start', start)
-    dispatcher.add_handler(start_handler)
-
-    # Add message handler for text messages
-    text_handler = MessageHandler(Filters.text & ~Filters.command, handle_text)
-    dispatcher.add_handler(text_handler)
-
-    # Start the bot
-    updater.start_polling()
-    updater.idle()
-
-if __name__ == '__main__':
-    main()
+# Start the bot
+bot.polling()
