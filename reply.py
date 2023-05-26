@@ -40,4 +40,3 @@ replies = {
     "aapko ghar se bahar jana pasand hai?": "मैं एक AI बॉट हूँ, मेरे लिए यात्रा करना संभव नहीं है।",
     "kya aapko bhoot-pret waghera hai?": "नहीं, मैं एक AI बॉट हूँ, मेरे लिए ऐसी अस्तित्वा की बातें नहीं होती।",
     "aap kitna samay tak chal sakte ho?": "मैं 24x7 चल सकता हूँ, मेरे सर्वर पर रहता हूँ और किसी भी समय उपयोगकर्ताओं की मदद के लिए तैयार हूँ।",
-    "mujhe aapse kuch baat karni hai": "ज़रू
